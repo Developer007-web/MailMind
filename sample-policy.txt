@@ -1,0 +1,49 @@
+COMPANY KNOWLEDGE BASE — SAMPLE DOCUMENTS
+==========================================
+(Replace these with your actual company documents)
+
+--- REFUND POLICY ---
+Annual subscriptions: Full refund within 30 days of purchase.
+Pro-rated refund available between 31-180 days from billing date.
+After 180 days: no refund; cancellation takes effect at end of billing cycle.
+Monthly subscriptions: Cancel anytime; no refund for current month.
+To initiate a refund: email billing@company.com with your order number.
+
+--- PRICING ---
+Starter plan: $29/month or $290/year (save 17%)
+  - Up to 5 users, 10GB storage, email support
+Pro plan: $79/month or $790/year (save 17%)
+  - Up to 25 users, 100GB storage, priority support, API access
+Enterprise plan: Custom pricing
+  - Unlimited users, dedicated support, SSO, custom contracts
+  - Contact sales@company.com for a quote
+
+--- HR LEAVE POLICY ---
+Annual leave: 20 days per year (pro-rated for part-year employees)
+Sick leave: 10 days per year (no carry-over)
+Public holidays: All national public holidays observed
+Parental leave: 16 weeks fully paid (primary carer), 4 weeks (secondary carer)
+Leave requests: Submit via HR portal at least 2 weeks in advance for annual leave
+
+--- SUPPORT SLA ---
+Starter plan: Response within 48 business hours
+Pro plan: Response within 8 business hours
+Enterprise plan: Response within 2 hours, 24/7 coverage
+All plans: Critical P1 issues responded to within 1 hour regardless of plan
+Submit tickets at: support.company.com
+
+--- FREQUENTLY ASKED QUESTIONS ---
+Q: Can I upgrade my plan mid-cycle?
+A: Yes. You'll be charged a pro-rated amount for the remainder of the billing period.
+
+Q: Do you offer a free trial?
+A: Yes, 14-day free trial on Starter and Pro plans. No credit card required.
+
+Q: Is my data backed up?
+A: Yes. Daily automated backups retained for 30 days. Enterprise customers get 90-day retention.
+
+Q: Can I export my data?
+A: Yes. All plans support full data export in CSV and JSON from the Settings, Export page.
+
+Q: Do you offer discounts for nonprofits or education?
+A: Yes, 30% discount for registered nonprofits and educational institutions. Email sales@company.com.

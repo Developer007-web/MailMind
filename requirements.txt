@@ -1,0 +1,17 @@
+langchain==0.3.25
+langchain-groq==0.3.2
+langchain-community==0.3.24
+langchain-chroma==0.2.4
+langchain-openai==0.3.16
+chromadb>=1.0.9
+fastmcp==2.3.4
+google-api-python-client==2.170.0
+google-auth-oauthlib==1.2.1
+google-auth-httplib2==0.2.0
+openai==1.82.0
+fastapi==0.115.12
+uvicorn==0.34.2
+streamlit==1.45.1
+python-dotenv==1.1.0
+pypdf==5.5.0
+docx2txt==0.8
