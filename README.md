@@ -175,16 +175,5 @@ Human-in-the-loop. The LLM is grounded but not infallible — a human review ste
 
 ---
 
-## Resume bullet points
 
-- Built RAG pipeline over internal docs (PDF/DOCX/TXT) with 500-token chunking, MMR retrieval, and ChromaDB persistence
-- Integrated Groq (Llama-3.3-70b, ~300 tok/s) via LangChain `ChatGroq` for sub-second grounded draft generation
-- Exposed Gmail as MCP tools (list, read, draft) via FastMCP + OAuth2 using `google-api-python-client`
-- Implemented source citation on every draft, with retrieval eval (precision@k) logged in README
-- Deployed full-stack app (FastAPI + Streamlit) with model-switching UI and human-in-the-loop draft review
 
----
-
-## License
-
-MIT
