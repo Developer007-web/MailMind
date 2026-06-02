@@ -174,6 +174,7 @@ Low temperature keeps the LLM grounded in the retrieved context. Higher temperat
 Human-in-the-loop. The LLM is grounded but not infallible — a human review step before sending is the responsible default.
 
 ---
+by Aman Pratap Singh
 
 
 
