@@ -159,7 +159,7 @@ email-assistant/
 
 ---
 
-## Key design decisions
+## Key design decisions 
 
 **Why Groq instead of OpenAI for generation?**
 Groq runs Llama-3 at ~300 tokens/sec — replies are near-instant. For a demo, this is far more impressive than waiting 3-5 seconds.
