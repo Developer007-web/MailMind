@@ -172,7 +172,7 @@ Low temperature keeps the LLM grounded in the retrieved context. Higher temperat
 
 **Why save as draft instead of sending directly?**
 Human-in-the-loop. The LLM is grounded but not infallible — a human review step before sending is the responsible default.
-
+Searching for the Job
 ---
 by Aman Pratap Singh
 
