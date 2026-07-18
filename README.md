@@ -1,180 +1,350 @@
-# AI Email Assistant
-### RAG + MCP + Groq · Python · LangChain · ChromaDB · Gmail API
 
-An AI assistant that reads your Gmail inbox, retrieves relevant context from your company knowledge base using RAG, and drafts grounded replies using Groq (Llama-3.3-70b) — all without hallucinating policies that don't exist.
+# 📬 MailMind — AI Email Assistant
 
----
+> **An intelligent Gmail assistant powered by RAG, MCP, and Groq that reads emails, retrieves relevant company knowledge, and drafts grounded replies with source citations.**
 
-## Architecture
-
-```
-Gmail Inbox
-    │
-    ▼ MCP (list_inbox / read_email)
-Email body
-    │
-    ▼ RAG (ChromaDB + MMR retrieval)
-Top-4 relevant chunks from company docs
-    │
-    ▼ Groq LLM (llama-3.3-70b-versatile, temp=0.2)
-Grounded email draft + source citations
-    │
-    ▼ MCP (save_draft)
-Gmail Drafts folder (human reviews before sending)
-```
-
-## Stack
-
-| Layer | Tool |
-|---|---|
-| LLM | Groq `llama-3.3-70b-versatile` (~300 tok/s) |
-| RAG framework | LangChain `RetrievalQA` |
-| Vector store | ChromaDB (local, persisted) |
-| Embeddings | OpenAI `text-embedding-3-small` |
-| Gmail integration | FastMCP + Gmail API (OAuth2) |
-| API layer | FastAPI + uvicorn |
-| UI | Streamlit |
+![Python](https://img.shields.io/badge/Python-3.10+-blue)
+![LangChain](https://img.shields.io/badge/LangChain-RAG-green)
+![Groq](https://img.shields.io/badge/Groq-Llama--3.3--70B-orange)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-success)
+![Streamlit](https://img.shields.io/badge/Streamlit-UI-red)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ---
 
-## Setup
+## 🚀 Overview
 
-### 1. Clone and install
+**MailMind** is an AI-powered email assistant that connects directly to Gmail using the **Model Context Protocol (MCP)** and generates accurate, context-aware email drafts using **Retrieval-Augmented Generation (RAG)**.
+
+Instead of relying solely on an LLM's internal knowledge, MailMind retrieves relevant information from your organization's documents before generating a response, significantly reducing hallucinations and improving factual accuracy.
+
+Every generated response is saved as a **Gmail draft**, ensuring a **human-in-the-loop** workflow before emails are sent.
+
+---
+
+# ✨ Features
+
+* 📥 Read unread Gmail messages
+* 🤖 AI-generated email replies using Groq Llama 3.3 70B
+* 📚 RAG-powered contextual retrieval
+* 🔍 ChromaDB vector database
+* 📄 Supports PDF, DOCX, TXT & Markdown knowledge bases
+* ⚡ Fast generation using Groq inference
+* 🧠 MMR retrieval for diverse context selection
+* 📝 Save replies directly to Gmail Drafts
+* 💻 Streamlit web interface
+* 🔧 FastMCP Gmail integration
+* 📊 Retrieval evaluation script
+* 🔒 Human approval before sending
+
+---
+
+# 🏗️ Architecture
+
+```text
+                    Gmail Inbox
+                         │
+                         ▼
+          MCP (Read Gmail Messages)
+                         │
+                         ▼
+                  Email Content
+                         │
+                         ▼
+          RAG Retrieval (ChromaDB)
+                         │
+      Top Relevant Company Documents
+                         │
+                         ▼
+     Groq Llama-3.3-70B (Grounded Generation)
+                         │
+                         ▼
+          Draft Response + Citations
+                         │
+                         ▼
+          MCP (Save Gmail Draft)
+                         │
+                         ▼
+              Gmail Drafts Folder
+```
+
+---
+
+# 🛠️ Tech Stack
+
+| Category          | Technology                    |
+| ----------------- | ----------------------------- |
+| LLM               | Groq Llama-3.3-70B            |
+| Framework         | LangChain                     |
+| Vector Database   | ChromaDB                      |
+| Embeddings        | OpenAI text-embedding-3-small |
+| Email Integration | Gmail API + FastMCP           |
+| Backend           | FastAPI                       |
+| Frontend          | Streamlit                     |
+| Language          | Python                        |
+
+---
+
+# 📂 Project Structure
+
+```text
+MailMind/
+│
+├── app.py                 # Streamlit interface
+├── agent.py               # CLI orchestrator
+├── gmail_mcp.py           # MCP Gmail server
+├── rag_chain.py           # RAG pipeline
+├── ingest.py              # Document ingestion
+├── eval.py                # Retrieval evaluation
+├── requirements.txt
+├── .env.example
+│
+├── company_docs/
+│   ├── pdf/
+│   ├── docx/
+│   ├── txt/
+│   └── md/
+│
+├── chroma_db/
+│
+├── credentials.json
+└── token.json
+```
+
+---
+
+# ⚙️ Installation
+
+## 1. Clone Repository
 
 ```bash
-git clone https://github.com/yourname/email-assistant
-cd email-assistant
+git clone https://github.com/Developer007-web/MailMind.git
+
+cd MailMind
+```
+
+---
+
+## 2. Create Virtual Environment
+
+```bash
 python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
+```
+
+### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+### Linux / macOS
+
+```bash
+source venv/bin/activate
+```
+
+---
+
+## 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure environment
+---
 
-```bash
-cp .env.example .env
-# Edit .env and fill in:
-#   GROQ_API_KEY   — from https://console.groq.com (free)
-#   OPENAI_API_KEY — from https://platform.openai.com (for embeddings only)
-```
+# 🔑 Environment Variables
 
-### 3. Add company documents
+Create a `.env` file.
 
-Drop your PDF, DOCX, TXT, or MD files into `company_docs/`:
+| Variable         | Description              |
+| ---------------- | ------------------------ |
+| `GROQ_API_KEY`   | Groq API key             |
+| `OPENAI_API_KEY` | OpenAI embedding API key |
 
-```
+---
+
+# 📚 Add Knowledge Base
+
+Place your company documents inside:
+
+```text
 company_docs/
-├── refund-policy.pdf
-├── pricing.pdf
-├── hr-handbook.pdf
-├── product-faq.md
-└── support-guide.txt
 ```
 
-Then run the ingestion pipeline:
+Supported formats:
+
+* PDF
+* DOCX
+* TXT
+* Markdown
+
+Generate embeddings:
 
 ```bash
 python ingest.py
 ```
 
-This creates `chroma_db/` with all embedded chunks. Re-run whenever you add or update docs.
+This creates a persistent ChromaDB vector store.
 
-### 4. Set up Gmail OAuth
+---
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com)
-2. Create a project → Enable **Gmail API**
-3. Go to **APIs & Services → Credentials → Create Credentials → OAuth 2.0 Client ID**
-4. Application type: **Desktop app**
-5. Download the JSON → rename to `credentials.json` → place in project root
-6. First run opens a browser window for consent — approve it
-7. A `token.json` is saved automatically for future runs
+# 📧 Gmail OAuth Setup
 
-### 5. Run
+1. Open Google Cloud Console.
+2. Create a project.
+3. Enable Gmail API.
+4. Create an OAuth Desktop Application.
+5. Download the credentials.
+6. Rename the file to:
 
-**Option A — Streamlit UI (recommended):**
+```text
+credentials.json
+```
+
+7. Place it in the project root.
+8. Run the project once to generate `token.json`.
+
+---
+
+# ▶️ Running the Project
+
+## Streamlit UI
+
 ```bash
 streamlit run app.py
 ```
 
-**Option B — CLI agent:**
+---
+
+## CLI Agent
+
+Interactive mode
+
 ```bash
-# Interactive mode (review each draft before saving)
 python agent.py
+```
 
-# Auto-save all drafts
+Auto-save drafts
+
+```bash
 python agent.py --auto --count 10
+```
 
-# Process all emails (not just unread)
+Process all emails
+
+```bash
 python agent.py --all
 ```
 
-**Option C — Direct Python:**
+---
+
+## Python API
+
 ```python
 from rag_chain import draft_reply
-result = draft_reply("Can you clarify the refund policy for annual subscriptions?")
+
+result = draft_reply(
+    "Can you clarify the refund policy for annual subscriptions?"
+)
+
 print(result["draft"])
 print(result["sources"])
 ```
 
 ---
 
-## Evaluation
+# 📈 Evaluation
 
-Run the retrieval eval to measure RAG quality (edit `TEST_CASES` in `eval.py` to match your docs first):
+Measure retrieval performance.
 
 ```bash
 python eval.py
 ```
 
-Sample output:
-```
-  [✓] What is the refund policy for annual subscriptions?...
-       Expected : refund-policy.pdf
-       Retrieved: refund-policy.pdf, pricing.pdf
-       Top score: 0.8912
+Example:
 
-  Precision@4: 4/5 = 80.0%
-  ✓ Good retrieval quality (≥80%)
-```
+```text
+Expected : refund-policy.pdf
 
----
+Retrieved:
+refund-policy.pdf
+pricing.pdf
 
-## Project structure
-
-```
-email-assistant/
-├── ingest.py          # Load → chunk → embed → persist to ChromaDB
-├── rag_chain.py       # Retrieval + Groq generation chain
-├── gmail_mcp.py       # FastMCP server (Gmail tools)
-├── agent.py           # CLI orchestrator
-├── app.py             # Streamlit UI
-├── eval.py            # Retrieval precision evaluation
-├── requirements.txt
-├── .env.example
-├── company_docs/      # Your documents (add files here)
-├── chroma_db/         # Auto-created after ingest.py
-├── credentials.json   # Gmail OAuth credentials (you add this)
-└── token.json         # Auto-created after first Gmail auth
+Precision@4 = 80%
 ```
 
 ---
 
-## Key design decisions 
+# 🎯 Design Decisions
 
-**Why Groq instead of OpenAI for generation?**
-Groq runs Llama-3 at ~300 tokens/sec — replies are near-instant. For a demo, this is far more impressive than waiting 3-5 seconds.
+### Why Groq?
 
-**Why MMR retrieval instead of similarity search?**
-Max Marginal Relevance avoids returning 4 nearly-identical chunks. It picks the most relevant AND most diverse chunks, giving the LLM better coverage of the knowledge base.
+Groq provides extremely low-latency inference (~300 tokens/sec), making email generation nearly instantaneous while maintaining strong quality.
 
-**Why temperature=0.2?**
-Low temperature keeps the LLM grounded in the retrieved context. Higher temperature causes it to "fill in the gaps" with plausible-sounding but potentially incorrect information.
+### Why Retrieval-Augmented Generation?
 
-**Why save as draft instead of sending directly?**
-Human-in-the-loop. The LLM is grounded but not infallible — a human review step before sending is the responsible default.
-Searching for the Job
+RAG grounds responses in your organization's documents instead of relying solely on model memory, reducing hallucinations and improving factual accuracy.
+
+### Why MMR Retrieval?
+
+Max Marginal Relevance returns relevant yet diverse document chunks, giving the model broader context and reducing redundant information.
+
+### Why Save Drafts Instead of Sending Emails?
+
+MailMind follows a **human-in-the-loop** workflow. Drafts are generated automatically but require user review before sending, ensuring greater reliability and safety.
+
 ---
-by Aman Pratap Singh
 
+# 🔮 Roadmap
 
+* [ ] Multi-account Gmail support
+* [ ] Outlook integration
+* [ ] Slack integration
+* [ ] Citation highlighting
+* [ ] Web search fallback
+* [ ] Conversation memory
+* [ ] Fine-grained document permissions
+* [ ] Docker deployment
+* [ ] Kubernetes support
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Commit your changes.
+4. Open a Pull Request.
+
+---
+
+# 🔒 Security
+
+* OAuth2 authentication for Gmail access
+* API keys managed via environment variables
+* Local ChromaDB vector storage
+* Human approval before email sending
+* No automatic outbound emails
+
+---
+
+# 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+# 👨‍💻 Author
+
+**Aman Pratap Singh**
+
+* GitHub: **[https://github.com/Developer007-web](https://github.com/Developer007-web)**
+* LinkedIn: **[https://linkedin.com/in/aman-pratap-singh](https://linkedin.com/in/aman-pratap-singh)**
+
+---
+
+⭐ **If you found this project useful, consider giving it a star! It helps others discover the project and supports future development.**
 
